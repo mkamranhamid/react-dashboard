@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 import { connect } from "react-redux";
 
 import { AppBar, IconButton, IconMenu, MenuItem, Badge, MuiThemeProvider } from 'material-ui';
+import Drawer from 'material-ui/Drawer';
 import FlatButton from 'material-ui/FlatButton'
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import ActionChangeHistory from 'material-ui/svg-icons/action/change-history';
@@ -30,14 +31,9 @@ const NotificationIcon = (props) => {
 };
 
 
-function mapStateToProps(state) {
-  return {
-    currentUser: state.counterReducer['currentUser']
-  };
-}
-
 class App extends Component {
   state = {
+    open:true,
     valueSingle: '3',
     valueMultiple: ['3', '5'],
   };
@@ -59,14 +55,17 @@ class App extends Component {
           />
       </div>
     );
-    const navbar = (this.props.currentUser && this.props.currentUser.email) ? (
+    const dropD = (<FlatButton
+      label='Dropdown'
+      style={buttonStyle} />);
+    const navbar = (
       <div className='Navbar-Main-Menu'>
         <FlatButton
           label='Account'
           style={buttonStyle}
           onClick={() => browserHistory.push('/viewSale')}/>
         <IconMenu
-          iconButtonElement={<span style={{'color':'#ffffff'}}>Dropdown</span>}
+          iconButtonElement={dropD}
           onChange={this.handleChangeSingle}
           value={this.state.valueSingle} >
           <MenuItem value="1" primaryText="Refresh" />
@@ -81,49 +80,54 @@ class App extends Component {
           onClick={() => browserHistory.push('/productDetails')}
           />
       </div>
-    ) : beforeLogin;
-    const leftBar = (this.props.currentUser && this.props.currentUser.email) ? (
-      <div>  
-              <span>
-                <h3 style={{'display': 'inline'}}>Dashboard</h3>
-              </span>
-            <IconButton>
-                <ActionChangeHistory />
-              </IconButton>
-            <IconMenu
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-              iconButtonElement={
-                <IconButton style={{ padding: 0 }}>
-                  <Badge
-                    badgeStyle={{ top: 12, right: 12, backgroundColor: colors.yellow800 }}
-                    badgeContent={0}
-                    secondary={true}
-                    >
-                    <NotificationIcon color={getMuiTheme().appBar.textColor} />
-                  </Badge>
-                </IconButton>
-              }>
-              <MenuItem primaryText="View Notifications" />
-              <MenuItem primaryText="Dismiss All" />
-            </IconMenu>
-            <IconButton>
-              <ActionSearch />
+    );
+    const leftBar = (
+      <div>
+        <span>
+          <h3 style={{ 'display': 'inline' }}>Dashboard</h3>
+        </span>
+        <IconButton>
+          <ActionChangeHistory />
+        </IconButton>
+        <IconMenu
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          iconButtonElement={
+            <IconButton style={{ padding: 0 }}>
+              <Badge
+                badgeStyle={{ top: 12, right: 12, backgroundColor: colors.yellow800 }}
+                badgeContent={0}
+                secondary={true}
+                >
+                <NotificationIcon color={getMuiTheme().appBar.textColor} />
+              </Badge>
             </IconButton>
-            </div>
-    ):<div></div>
+          }>
+          <MenuItem primaryText="View Notifications" />
+          <MenuItem primaryText="Dismiss All" />
+        </IconMenu>
+        <IconButton>
+          <ActionSearch />
+        </IconButton>
+      </div>
+    )
     const muiTheme = getMuiTheme()
     return (
       <div className="App">
-        <div>
+        <div style={{marginLeft: '20%'}}>
           <AppBar
           iconElementLeft={leftBar}
           iconElementRight={navbar} />
+          <Drawer width={260} open={this.state.open}>
+            <MenuItem >Menu Item</MenuItem>
+            <MenuItem >Menu Item 2</MenuItem>
+            <div>KAKA WHAT</div>
+          </Drawer>
         </div>
-        {this.props.children}
+        <div style={{marginLeft:'19.5%'}}>{this.props.children}</div>
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, null)(App);
+export default (App);

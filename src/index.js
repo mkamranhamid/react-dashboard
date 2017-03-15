@@ -10,38 +10,28 @@ import { Provider } from 'react-redux';
 
 
 
-import store  from './store/index';
 import App from './app/App';
-import AboutComponent from './components/about/about.component';
-import HomeComponent from './components/home/home.component';
 import DashboardComponent from './components/dashboard/dashboard.component';
-import AddStoreComponent from './components/addStore/addStore.component';
-import AddProductComponent from './components/addProduct/addProduct.component';
-import SaleDetailsComponent from './components/saleDetails/saleDetails.component';
-import ViewProductComponent from './components/viewProduct/viewProduct.component';
-import ViewScaleComponent from './components/viewSale/viewSale.component';
 
 import './index.css';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
+const muiTheme = getMuiTheme({
+  palette: {
+    textColor: '#000',
+  },
+  appBar: {
+    color: '#919389',
+  },
+});
 ReactDOM.render((
-  <Provider store={store}>
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
       <Router history={browserHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={HomeComponent} />
-          <Route path="/dashboard" component={DashboardComponent} />
-          <Route path="/addStore" component={AddStoreComponent} />
-          <Route path="/viewProduct" component={ViewProductComponent} />
-          <Route path="/viewSale" component={ViewScaleComponent} />
-          <Route path="/addProduct" component={AddProductComponent} />
-          <Route path="/saleDetails" component={SaleDetailsComponent} />
-          <Route path="/login" component={AboutComponent} />
-          <Route path="/signup" component={HomeComponent} />
+          <IndexRoute component={DashboardComponent} />
         </Route>
       </Router>
-    </MuiThemeProvider>
-  </Provider>),
+    </MuiThemeProvider>),
   document.getElementById('root')
 );
